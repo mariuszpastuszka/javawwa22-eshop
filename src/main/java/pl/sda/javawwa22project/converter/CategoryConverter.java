@@ -5,7 +5,9 @@ import org.springframework.stereotype.Component;
 import pl.sda.javawwa22project.dto.CategoryDto;
 import pl.sda.javawwa22project.dto.ItemDto;
 import pl.sda.javawwa22project.entity.Category;
+import pl.sda.javawwa22project.entity.Item;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,15 +25,25 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
     return CategoryDto.builder()
         .id(entity.getId())
         .name(entity.getName())
-        .items(getAllItemsConverted(entity))
+        .items(getAllItemsConverted(entity)) // TODO change into method reference
         .build();
   }
 
   @Override
   public Category fromDto(CategoryDto dto) {
-    return null;
+    return Category.builder()
+        .id(dto.getId())
+        .name(dto.getName())
+        .items()
+        .build();
   }
 
+  private List<Item> getAllItemsConvertedFromDto(Category dto) {
+    return dto.getItems()
+        .stream()
+        .map(item -> itemConverter.fromDto(item))
+        .collect(Collectors.toList());
+  }
   private List<ItemDto> getAllItemsConverted(Category entity) {
     return entity
         .getItems()
