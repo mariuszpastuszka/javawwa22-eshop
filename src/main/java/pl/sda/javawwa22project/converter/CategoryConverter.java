@@ -37,11 +37,11 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
         .items()
         .build();
   }
-
-  private List<Item> getAllItemsConvertedFromDto(Category dto) {
+//
+  private List<Item> getAllItemsConvertedFromDto(CategoryDto dto) {
     return dto.getItems()
         .stream()
-        .map(item -> itemConverter.fromDto(item))
+        .map(itemConverter::fromDto)
         .collect(Collectors.toList());
   }
   private List<ItemDto> getAllItemsConverted(Category entity) {
