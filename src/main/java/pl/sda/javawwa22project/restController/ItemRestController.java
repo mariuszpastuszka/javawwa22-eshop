@@ -18,36 +18,36 @@ import pl.sda.javawwa22project.service.ItemsService;
 @RequestMapping("/rest")
 public class ItemRestController {
 
-  private static final Logger logger = LoggerFactory.getLogger(ItemRestController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ItemRestController.class);
 
-  private final ItemsService itemsService;
-  private final ItemConverter itemConverter;
+    private final ItemsService itemsService;
+    private final ItemConverter itemConverter;
 
-  public ItemRestController(final ItemsService itemsService,
-                            final ItemConverter itemConverter) {
-    this.itemsService = itemsService;
-    this.itemConverter = itemConverter;
-  }
-
-  @GetMapping("/items/{id}")
-  public ResponseEntity<ItemDto> displayItemById(@PathVariable Long id) {
-    logger.info("displayItemById with id: [{}]", id);
-    var result = itemsService.findItemById(id)
-        .map(itemConverter::fromItem)
-        .orElse(null);
-
-    if (result != null) {
-      return ResponseEntity.ok(result);
-    } else {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ItemRestController(final ItemsService itemsService,
+                              final ItemConverter itemConverter) {
+        this.itemsService = itemsService;
+        this.itemConverter = itemConverter;
     }
-  }
 
-  @PostMapping("/item-save")
-  public ItemDto saveItem(@RequestBody ItemDto itemToSave) {
-    logger.info("saveItem(), received param: [{}]", itemToSave);
+    @GetMapping("/items/{id}")
+    public ResponseEntity<ItemDto> displayItemById(@PathVariable Long id) {
+        logger.info("displayItemById with id: [{}]", id);
+        var result = itemsService.findItemById(id)
+            .map(itemConverter::fromEntity)
+            .orElse(null);
 
-    var item = itemConverter.fromDto(itemToSave);
-    return itemConverter.fromItem(itemsService.saveItem(item));
-  }
+        if (result != null) {
+            return ResponseEntity.ok(result);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/item-save")
+    public ItemDto saveItem(@RequestBody ItemDto itemToSave) {
+        logger.info("saveItem(), received param: [{}]", itemToSave);
+
+        var item = itemConverter.fromDto(itemToSave);
+        return itemConverter.fromEntity(itemsService.saveItem(item));
+    }
 }

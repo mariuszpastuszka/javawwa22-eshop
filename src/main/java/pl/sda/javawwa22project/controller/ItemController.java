@@ -14,7 +14,6 @@ import pl.sda.javawwa22project.entity.Item;
 import pl.sda.javawwa22project.exception.ItemNotFoundException;
 import pl.sda.javawwa22project.service.ItemsService;
 
-import javax.validation.Valid;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -45,7 +44,7 @@ public class ItemController {
     public String displayItemById(@PathVariable Long id, Model model) {
         logger.info("displayItemById with id: [{}]", id);
         var itemDto = itemsService.findItemById(id)
-            .map(itemConverter::fromItem)
+            .map(itemConverter::fromEntity)
             .orElse(ItemDto.builder().build());
 
         model.addAttribute(ONE_ITEM_KEY, itemDto);
@@ -65,7 +64,7 @@ public class ItemController {
         logger.info("getAllItems");
         var itemsToShow = itemsService.findAllItems()
             .stream()
-            .map(itemConverter::fromItem)
+            .map(itemConverter::fromEntity)
             .collect(Collectors.toList());
 
         model.addAttribute(MANY_ITEMS_KEY, itemsToShow);
@@ -86,7 +85,7 @@ public class ItemController {
         logger.info("editIem() with id: [{}]", inputId);
 
         Optional<Item> foundItem = itemsService.findItemById(inputId);
-        var itemDto = foundItem.map(itemConverter::fromItem)
+        var itemDto = foundItem.map(itemConverter::fromEntity)
             .orElseThrow(() -> new ItemNotFoundException(String.format("Item with id [%d] not exists!!!", inputId)));
 
         model.addAttribute(CURRENT_ITEM, itemDto);

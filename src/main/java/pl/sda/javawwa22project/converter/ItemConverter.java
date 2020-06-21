@@ -14,13 +14,13 @@ public class ItemConverter implements Converter<Item, ItemDto> {
         this.categoryConverter = categoryConverter;
     }
 
-
-    public ItemDto fromItem(Item item) {
+    @Override
+    public ItemDto fromEntity(Item item) {
         return ItemDto.builder()
             .id(item.getId())
             .itemName(item.getItemName())
             .description(item.getDescription())
-            .category(item.getCategory())
+            .category(categoryConverter.fromEntity(item.getCategory()))
             .price(item.getPrice())
             .quantity(item.getQuantity())
             .picture(item.getPicture())
@@ -28,20 +28,15 @@ public class ItemConverter implements Converter<Item, ItemDto> {
     }
 
     @Override
-    public ItemDto fromEntity(Item entity) {
-        return null;
-    }
-
-    @Override
     public Item fromDto(ItemDto itemDto) {
-        return new Item(
-            itemDto.getId(),
-            itemDto.getItemName(),
-            itemDto.getDescription(),
-            itemDto.getCategory(),
-            itemDto.getPrice(),
-            itemDto.getQuantity(),
-            itemDto.getPicture()
-        );
+        return Item.builder()
+            .id(itemDto.getId())
+            .itemName(itemDto.getItemName())
+            .description(itemDto.getDescription())
+            .category(categoryConverter.fromDto(itemDto.getCategory()))
+            .price(itemDto.getPrice())
+            .quantity(itemDto.getQuantity())
+            .picture(itemDto.getPicture())
+            .build();
     }
 }
