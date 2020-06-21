@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -103,8 +104,12 @@ public class ItemController {
     }
 
     @PostMapping("/item-save")
-    public String saveItem(ItemDto itemToSave) {
+    public String saveItem(@Valid ItemDto itemToSave, BindingResult bindingResult) {
         logger.info("saveItem(), received param: [{}]", itemToSave);
+
+        if (bindingResult.hasErrors()) {
+            return "items/add-edit";
+        }
 
         var item = itemConverter.fromDto(itemToSave);
         var savedItem = itemsService.saveItem(item);
