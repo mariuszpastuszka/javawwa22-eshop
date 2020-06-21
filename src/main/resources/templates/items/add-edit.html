@@ -18,20 +18,27 @@
 
     <label for="itemNameId">Item name:</label>
     <!--        <input type="text" id="itemNameId" name="itemName"><br>-->
-    <input type="text" id="itemNameId" th:field="*{itemName}"><br>
+    <input type="text" id="itemNameId" th:field="*{itemName}">
+    <span th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}"></span><br>
     <!--        <input type="text" id="itemNameId" th:field="${item.itemName}"><br>-->
 
     <label for="descriptionId">Item description:</label>
-    <input type="text" id="descriptionId" th:field="*{description}"><br>
+    <input type="text" id="descriptionId" th:field="*{description}">
+    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span><br>
 
     <label for="categoryId">Category:</label>
-    <input type="text" id="categoryId" th:field="*{category}"><br>
+    <input type="text" id="categoryId" th:field="*{category}">
+    <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></span><br>
 
     <label for="priceId">Price:</label>
-    <input type="number" id="priceId" th:field="*{price}"><br>
+    <input type="number" id="priceId" th:field="*{price}">
+    <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+    <br>
 
     <label for="quantityId">Quantity:</label>
-    <input type="number" id="quantityId" th:field="*{quantity}" value=1><br>
+    <input type="number" id="quantityId" th:field="*{quantity}" value=1>
+    <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+    <br>
 
     <input type="submit" value="Submit">
 </form>
