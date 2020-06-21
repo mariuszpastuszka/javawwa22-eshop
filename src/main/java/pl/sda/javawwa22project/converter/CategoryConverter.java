@@ -7,7 +7,6 @@ import pl.sda.javawwa22project.dto.ItemDto;
 import pl.sda.javawwa22project.entity.Category;
 import pl.sda.javawwa22project.entity.Item;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +24,7 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
     return CategoryDto.builder()
         .id(entity.getId())
         .name(entity.getName())
-        .items(getAllItemsConverted(entity)) // TODO change into method reference
+        .items(getAllItemsConverted(entity))
         .build();
   }
 
@@ -34,16 +33,17 @@ public class CategoryConverter implements Converter<Category, CategoryDto> {
     return Category.builder()
         .id(dto.getId())
         .name(dto.getName())
-        .items()
+        .items(getAllItemsConvertedFromDto(dto))
         .build();
   }
-//
+
   private List<Item> getAllItemsConvertedFromDto(CategoryDto dto) {
     return dto.getItems()
         .stream()
         .map(itemConverter::fromDto)
         .collect(Collectors.toList());
   }
+
   private List<ItemDto> getAllItemsConverted(Category entity) {
     return entity
         .getItems()
