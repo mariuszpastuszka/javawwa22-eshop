@@ -12,43 +12,43 @@ import java.util.stream.Collectors;
 
 @Component
 public class CategoryConverter implements Converter<Category, CategoryDto> {
-  private ItemConverter itemConverter;
+    private ItemConverter itemConverter;
 
-  @Autowired
-  public void setItemConverter(ItemConverter itemConverter) {
-    this.itemConverter = itemConverter;
-  }
+    @Autowired
+    public void setItemConverter(ItemConverter itemConverter) {
+        this.itemConverter = itemConverter;
+    }
 
-  @Override
-  public CategoryDto fromEntity(Category entity) {
-    return CategoryDto.builder()
-        .id(entity.getId())
-        .name(entity.getName())
-        .items(getAllItemsConverted(entity))
-        .build();
-  }
+    @Override
+    public CategoryDto fromEntity(Category entity) {
+        return CategoryDto.builder()
+            .id(entity.getId())
+            .name(entity.getName())
+            .items(getAllItemsConverted(entity))
+            .build();
+    }
 
-  @Override
-  public Category fromDto(CategoryDto dto) {
-    return Category.builder()
-        .id(dto.getId())
-        .name(dto.getName())
-        .items(getAllItemsConvertedFromDto(dto))
-        .build();
-  }
+    @Override
+    public Category fromDto(CategoryDto dto) {
+        return Category.builder()
+            .id(dto.getId())
+            .name(dto.getName())
+            .items(getAllItemsConvertedFromDto(dto))
+            .build();
+    }
 
-  private List<Item> getAllItemsConvertedFromDto(CategoryDto dto) {
-    return dto.getItems()
-        .stream()
-        .map(itemConverter::fromDto)
-        .collect(Collectors.toList());
-  }
+    private List<Item> getAllItemsConvertedFromDto(CategoryDto dto) {
+        return dto.getItems()
+            .stream()
+            .map(itemConverter::fromDto)
+            .collect(Collectors.toList());
+    }
 
-  private List<ItemDto> getAllItemsConverted(Category entity) {
-    return entity
-        .getItems()
-        .stream()
-        .map(itemConverter::fromEntity)
-        .collect(Collectors.toList());
-  }
+    private List<ItemDto> getAllItemsConverted(Category entity) {
+        return entity
+            .getItems()
+            .stream()
+            .map(itemConverter::fromEntity)
+            .collect(Collectors.toList());
+    }
 }
