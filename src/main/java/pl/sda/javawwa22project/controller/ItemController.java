@@ -104,10 +104,12 @@ public class ItemController {
     }
 
     @PostMapping("/item-save")
-    public String saveItem(@Valid ItemDto itemToSave, BindingResult bindingResult) {
+    public String saveItem(@Valid ItemDto itemToSave, BindingResult bindingResult, Model model) {
         logger.info("saveItem(), received param: [{}]", itemToSave);
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute(CURRENT_ITEM, itemToSave);
+            logger.warn("trying to save not valid object!!!");
             return "items/add-edit";
         }
 
